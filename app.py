@@ -36,7 +36,7 @@ def submit_cases():
     connection = get_db_connection()
     if connection:
         cursor = connection.cursor()
-        sql = "INSERT INTO `cases` (case_id, date_time, type, victimid, criminalid, location_id, discription) VALUES (%s, %s, %s, %s, %s, %s)"
+        sql = "INSERT INTO `cases` (case_id, date_time, type, victimid, criminalid, location_id, discription) VALUES (%s, %s, %s, %s, %s, %s,%s)"
         val = (case_id, date_time, case_type, victim_id, culprit_id, location_id, discription)
 
         try:
@@ -90,7 +90,7 @@ def submit_jail():
     connection = get_db_connection()
     if connection:
         cursor = connection.cursor()
-        sql = "INSERT INTO `cases` (record_id, preson_id, reason, enter_date, release_date) VALUES (%s, %s, %s, %s, %s, %s)"
+        sql = "INSERT INTO `cases` (record_id, preson_id, reason, enter_date, release_date) VALUES (%s, %s, %s, %s, %s)"
         val = (record_id, preson_id, reason, enter_date, release_date)
 
         try:
