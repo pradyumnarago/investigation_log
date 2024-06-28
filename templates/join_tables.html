@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Join Tables</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h2>Join Tables and Show Data</h2>
+    
+    {% if not show_table %}
+    <form id="joinForm" action="{{ url_for('join_tables') }}" method="POST">
+        <label for="table1">Select Table1:</label>
+        <select id="table1" name="table1">
+            {% for table in tables %}
+            <option value="{{ table }}">{{ table }}</option>
+            {% endfor %}
+        </select>
+        <label for="table2">Select Table:</label>
+        <select id="table2" name="table2">
+            {% for table in tables %}
+            <option value="{{ table }}">{{ table }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="attribute1">Attribute 1:</label>
+        <input type="text" id="attribute1" name="attribute1" required>
+        <br>
+        <label for="attribute2">Attribute 2:</label>
+        <input type="text" id="attribute2" name="attribute2" required>
+        <br>
+        <label for="whereatt">Where Attribute:</label>
+        <select id="whereatt" name="whereatt">
+            <option value="">Select Attribute</option>
+        </select>
+        <br>
+        <label for="value">Value:</label>
+        <input type="text" id="value" name="value" required>
+        <br>
+        <button type="submit">Join and Show Data</button>
+    </form>
+    {% endif %}
+
+    {% if show_table %}
+    <table>
+        <thead>
+            <tr>
+                {% for column in columns %}
+                <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                {% for value in row %}
+                <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <script>
+        $(document).ready(function() {
+            $('#table1').on('input', function() {
+                var tableName = $(this).val();
+                if (tableName) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/get_columns',
+                        contentType: 'application/json',
+                        data: JSON.stringify({table: tableName}),
+                        success: function(response) {
+                            var whereatt = $('#whereatt');
+                            whereatt.empty();
+                            whereatt.append('<option value="">Select Attribute</option>');
+                            response.forEach(function(column) {
+                                whereatt.append('<option value="' + column + '">' + column + '</option>');
+                            });
+                        },
+                        error: function() {
+                            alert('Error fetching columns.');
+                        }
+                    });
+                }
+            });
+
+            $('#table2').on('input', function() {
+                var tableName = $(this).val();
+                if (tableName) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/get_columns',
+                        contentType: 'application/json',
+                        data: JSON.stringify({table: tableName}),
+                        success: function(response) {
+                            var attribute2 = $('#attribute2');
+                            attribute2.empty();
+                            attribute2.append('<option value="">Select Attribute</option>');
+                            response.forEach(function(column) {
+                                attribute2.append('<option value="' + column + '">' + column + '</option>');
+                            });
+                        },
+                        error: function() {
+                            alert('Error fetching columns.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
