@@ -3,40 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investigation Log - Case Input</title>
+    <title>Investigation Log - Person Input</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
 
     <div class="container">
-        <h2>Case Input Form</h2>
+        <h2>Person Input Form</h2>
         <div id="error-message" class="error"></div>
-        <form id="case-form" action="/submit_case" method="POST">
+        <form id="person-form" action="/submit_people" method="POST">
             <div class="form-group">
                 <label for="person_id">Person ID:</label>
-                <input type="text" id="person_id" name="person_id" required>
+                <input type="text" id="person_id" name="person_id" aria-label="Person ID" required>
             </div>
             <div class="form-group">
                 <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" aria-label="Name" required>
             </div>
             <div class="form-group">
                 <label for="age">Age:</label>
-                <input type="text" id="age" name="age" required>
+                <input type="number" id="age" name="age" aria-label="Age" required>
             </div>
             <div class="form-group">
-                <label for="phno">Phone number:</label>
-                <input type="text" id="phno" name="phno" required>
+                <label for="phno">Phone Number:</label>
+                <input type="tel" id="phno" name="phno" aria-label="Phone Number" required>
             </div>
-
-            <button type="submit">Submit People info</button>
+            <div class="form-group">
+                <label for="address_id">Address ID:</label>
+                <input type="text" id="address_id" name="address_id" aria-label="Address ID" required>
+            </div>
+            <div class="form-group">
+                <label for="relationship">Relationship:</label>
+                <input type="text" id="relationship" name="relationship" aria-label="Relationship" required>
+            </div>
+            <button type="submit">Submit Person</button>
         </form>
-
     </div>
-
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
 </html>
-
