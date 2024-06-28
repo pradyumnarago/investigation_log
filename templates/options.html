@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBMS Trial - Index Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>DBMS Trial - Index Page</h1>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('input_tables') }}">Input Data for Tables</a></li>
+            <li><a href="{{ url_for('show_table') }}">Show Tables</a></li>
+            <li><a href="{{ url_for('show_joined_tables') }}">Show Joined Tables</a></li>
+            <li><a href="{{ url_for('custom_query') }}">Execute Custom Queries</a></li>
+        </ul>
+    </nav>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
