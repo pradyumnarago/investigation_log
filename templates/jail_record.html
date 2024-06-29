@@ -3,36 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investigation Log - Case Input</title>
+    <title>Jail Record Input</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
 
     <div class="container">
-        <h2>Case Input Form</h2>
+        <h2>Jail Record Input Form</h2>
         <div id="error-message" class="error"></div>
-        <form id="jail_record" action="/submit_case" method="POST">
+        <form id="jail-form" action="/submit_jail" method="POST">
             <div class="form-group">
-                <label for="criminal_id">criminal  ID (Cid):</label>
-                <input type="text" id="criminal_id" name="criminal_id" required>
+                <label for="record_id">Record ID:</label>
+                <input type="text" id="record_id" name="record_id" aria-label="Record ID" required>
             </div>
             <div class="form-group">
-                <label for="entry">Date of entry to jail:</label>
-                <input type="text" id="entry" name="entry" required>
+                <label for="preson_id">Person ID:</label>
+                <input type="text" id="preson_id" name="preson_id" aria-label="Person ID" required>
             </div>
             <div class="form-group">
-                <label for="release">Release date:</label>
-                <input type="text" id="release" name="release" required>
+                <label for="reason">Reason:</label>
+                <input type="text" id="reason" name="reason" aria-label="Reason" required>
             </div>
-
-            <button type="submit">Submit Case</button>
+            <div class="form-group">
+                <label for="enter_date">Enter Date:</label>
+                <input type="date" id="enter_date" name="enter_date" aria-label="Enter Date" required>
+            </div>
+            <div class="form-group">
+                <label for="release_date">Release Date:</label>
+                <input type="date" id="release_date" name="release_date" aria-label="Release Date" required>
+            </div>
+            <button type="submit">Submit Record</button>
         </form>
-
     </div>
-
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
 </html>
-

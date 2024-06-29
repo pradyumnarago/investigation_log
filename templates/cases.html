@@ -11,39 +11,40 @@
     <div class="container">
         <h2>Case Input Form</h2>
         <div id="error-message" class="error"></div>
-        <form id="case-form" action="/submit_case" method="POST">
+        <form id="case-form" action="/submit_cases" method="POST">
             <div class="form-group">
                 <label for="case_id">Case ID (Cid):</label>
-                <input type="text" id="case_id" name="case_id" required>
+                <input type="text" id="case_id" name="case_id" aria-label="Case ID" required>
+            </div>
+            <div class="form-group">
+                <label for="date_time">Date and Time:</label>
+                <input type="datetime-local" id="date_time" name="date_time" aria-label="Date and Time" required>
             </div>
             <div class="form-group">
                 <label for="type">Case Type:</label>
-                <input type="text" id="type" name="type" required>
+                <input type="text" id="type" name="type" aria-label="Case Type" required>
             </div>
             <div class="form-group">
-                <label for="victimid">Victim ID:</label>
-                <input type="text" id="victimid" name="victimid" required>
+                <label for="victim_id">Victim ID:</label>
+                <input type="text" id="victim_id" name="victim_id" aria-label="Victim ID" required>
             </div>
             <div class="form-group">
-                <label for="criminalid">Criminal ID:</label>
-                <input type="text" id="criminalid" name="criminalid" required>
+                <label for="culprit_id">Criminal ID:</label>
+                <input type="text" id="culprit_id" name="culprit_id" aria-label="Criminal ID" required>
             </div>
             <div class="form-group">
-                <label for="kri">Key Report Identifier (kri):</label>
-                <input type="text" id="kri" name="kri" required>
+                <label for="location_id">Location ID:</label>
+                <input type="text" id="location_id" name="location_id" aria-label="Location ID" required>
             </div>
             <div class="form-group">
-                <label for="anveb-p">Additional Notes (Anveb-p):</label>
-                <textarea id="anveb-p" name="anveb_p"></textarea>
+                <label for="discription">Description:</label>
+                <textarea id="discription" name="discription" aria-label="Description" required></textarea>
             </div>
             <button type="submit">Submit Case</button>
         </form>
-
     </div>
-
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
 </html>
-
