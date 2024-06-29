@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Tables</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h2>Show Table Data</h2>
+    
+    <form id="tableForm" action="{{ url_for('show_tables') }}" method="POST">
+        <label for="table">Table Name:</label>
+        <select id="table" name="table">
+            <option value="">Select table</option>
+            {% for table in tables %}
+            <option value="{{ table }}">{{ table }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="whereatt">Where Attribute:</label>
+        <select id="whereatt" name="whereatt">
+            <option value="">Select Attribute</option>
+        </select>
+        <br>
+        <label for="operator">Operator:</label>
+        <select id="operator" name="operator">
+            <option value="=">=</option>
+            <option value="<">&lt;</option>
+            <option value=">">&gt;</option>
+            <option value="<=">&lt;=</option>
+            <option value=">=">&gt;=</option>
+            <option value="LIKE">LIKE</option>
+        </select>
+        <br>
+        <label for="value">Value:</label>
+        <input type="text" id="value" name="value" required>
+        <br>
+        <button type="submit">Show Data</button>
+    </form>
+
+    {% if show_table %}
+    <table>
+        <thead>
+            <tr>
+                {% for column in columns %}
+                <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                {% for value in row %}
+                <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <script>
+        $(document).ready(function() {
+            $('#table').on('input', function() {
+                var tableName = $(this).val();
+                if (tableName) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/get_columns',
+                        contentType: 'application/json',
+                        data: JSON.stringify({table: tableName}),
+                        success: function(response) {
+                            var whereatt = $('#whereatt');
+                            whereatt.empty();
+                            whereatt.append('<option value="">Select Attribute</option>');
+                            response.forEach(function(column) {
+                                whereatt.append('<option value="' + column + '">' + column + '</option>');
+                            });
+                        },
+                        error: function() {
+                            alert('Error fetching columns.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
