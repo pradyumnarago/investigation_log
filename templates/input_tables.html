@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index - Navigate to Input Forms</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h2>Index - Navigate to Input Forms</h2>
+    <ul>
+        <li><a href="{{ url_for('cases') }}">Cases Input Form</a></li>
+        <li><a href="{{ url_for('jail_record') }}">Jail Record Input Form</a></li>
+        <li><a href="{{ url_for('locations') }}">Locations Input Form</a></li>
+        <li><a href="{{ url_for('people') }}">People Input Form</a></li>
+        <li><a href="{{ url_for('evidence') }}">Evidence Input Form</a></li>
+        <li><a href="{{ url_for('testimonials') }}">Testimonials Input Form</a></li>
+    </ul>
+</body>
+</html>

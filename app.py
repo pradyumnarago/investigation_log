@@ -15,10 +15,8 @@ def get_db_connection():
     try:
         connection = mysql.connector.connect(
             host="localhost",
-            #user=GlobalSQLCredentials.username,  # Update with your MySQL username
-            #password=GlobalSQLCredentials.password,  # Update with your MySQL password
-            user="root",
-            password="pradyu9164",
+            user=GlobalSQLCredentials.username,  # Update with your MySQL username
+            password=GlobalSQLCredentials.password,  # Update with your MySQL password
             database="investigation_log"
         )
         if connection.is_connected():
@@ -30,6 +28,34 @@ def get_db_connection():
 @app.route('/')
 def home():
     return render_template('sql_login.html')
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/cases')
+def cases():
+    return render_template('cases.html')
+
+@app.route('/jail_record')
+def jail_record():
+    return render_template('jail_record.html')
+
+@app.route('/locations')
+def locations():
+    return render_template('locations.html')
+
+@app.route('/people')
+def people():
+    return render_template('people.html')
+
+@app.route('/evidence')
+def evidence():
+    return render_template('evidence.html')
+
+@app.route('/testimonials')
+def testimonials():
+    return render_template('testimonials.html')
 
 @app.route('/sql_login', methods=['GET', 'POST'])
 def sql_login():
@@ -135,7 +161,7 @@ def submit_people():
     connection = get_db_connection()
     if connection:
         cursor = connection.cursor()
-        sql = "INSERT INTO `cases` (person_id, name, age, phno, address_id, relationship) VALUES (%s, %s, %s, %s, %s, %s)"
+        sql = "INSERT INTO `people` (person_id, name, age, phno, address_id, relationship) VALUES (%s, %s, %s, %s, %s, %s)"
         val = (person_id, name, age, phno, address_id, relationship)
 
         try:
@@ -162,7 +188,7 @@ def submit_jail():
     connection = get_db_connection()
     if connection:
         cursor = connection.cursor()
-        sql = "INSERT INTO `cases` (record_id, preson_id, reason, enter_date, release_date) VALUES (%s, %s, %s, %s, %s)"
+        sql = "INSERT INTO `jail_record` (record_id, preson_id, reason, enter_date, release_date) VALUES (%s, %s, %s, %s, %s)"
         val = (record_id, preson_id, reason, enter_date, release_date)
 
         try:
@@ -187,7 +213,7 @@ def submit_location():
     connection = get_db_connection()
     if connection:
         cursor = connection.cursor()
-        sql = "INSERT INTO `cases` (location_id, location_name, description, place) VALUES (%s, %s, %s, %s)"
+        sql = "INSERT INTO `location` (location_id, location_name, description, place) VALUES (%s, %s, %s, %s)"
         val = (location_id, location_name, description, place)
 
         try:
@@ -214,7 +240,7 @@ def submit_evidence():
     connection = get_db_connection()
     if connection:
         cursor = connection.cursor()
-        sql = "INSERT INTO `cases` (evidence_id, location_id, description, notes, case_id) VALUES (%s, %s, %s, %s, %s)"
+        sql = "INSERT INTO `evidence` (evidence_id, location_id, description, notes, case_id) VALUES (%s, %s, %s, %s, %s)"
         val = (evidence_id, location_id, description, notes,case_id)
 
         try:
@@ -239,7 +265,7 @@ def submit_testimonials():
     connection = get_db_connection()
     if connection:
         cursor = connection.cursor()
-        sql = "INSERT INTO `cases` (testimonial_id, case_id, person_id, statement) VALUES (%s, %s, %s, %s)"
+        sql = "INSERT INTO `testimonials` (testimonial_id, case_id, person_id, statement) VALUES (%s, %s, %s, %s)"
         val = (testimonial_id, case_id, person_id, statement)
 
         try:
@@ -286,6 +312,18 @@ def show_tables():
             return "Failed to connect to the database."
     
     return render_template('show_tables.html', show_table=False)
+
+@app.route('/slist_tables', methods=['GET'])
+def slist_tables():
+    connection = get_db_connection()
+    if connection:
+        cursor = connection.cursor()
+        cursor.execute("SHOW TABLES")
+        tables = [row[0] for row in cursor.fetchall()]
+        connection.close()
+        return render_template('show_table.html', tables=tables, show_table=False)
+    else:
+        return "Failed to connect to the database"
 
 @app.route('/get_columns', methods=['POST'])
 def get_columns():

@@ -9,10 +9,14 @@
 <body>
     <h2>Show Table Data</h2>
     
-    {% if not show_table %}
     <form id="tableForm" action="{{ url_for('show_tables') }}" method="POST">
         <label for="table">Table Name:</label>
-        <input type="text" id="table" name="table" required>
+        <select id="table" name="table">
+            <option value="">Select table</option>
+            {% for table in tables %}
+            <option value="{{ table }}">{{ table }}</option>
+            {% endfor %}
+        </select>
         <br>
         <label for="whereatt">Where Attribute:</label>
         <select id="whereatt" name="whereatt">
@@ -34,7 +38,6 @@
         <br>
         <button type="submit">Show Data</button>
     </form>
-    {% endif %}
 
     {% if show_table %}
     <table>
