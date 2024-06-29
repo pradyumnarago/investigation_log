@@ -9,30 +9,39 @@
 <body>
     <h2>Join Tables and Show Data</h2>
     
-    {% if not show_table %}
     <form id="joinForm" action="{{ url_for('join_tables') }}" method="POST">
         <label for="table1">Select Table1:</label>
         <select id="table1" name="table1">
+            <option value="">Select table</option>
             {% for table in tables %}
             <option value="{{ table }}">{{ table }}</option>
             {% endfor %}
         </select>
         <label for="table2">Select Table:</label>
         <select id="table2" name="table2">
+            <option value="">Select table</option>
             {% for table in tables %}
             <option value="{{ table }}">{{ table }}</option>
             {% endfor %}
         </select>
         <br>
         <label for="attribute1">Attribute 1:</label>
-        <input type="text" id="attribute1" name="attribute1" required>
+        <select id="attribute1" name="attribute1"></select>
         <br>
         <label for="attribute2">Attribute 2:</label>
-        <input type="text" id="attribute2" name="attribute2" required>
+        <select id="attribute2" name="attribute2"></select>
         <br>
         <label for="whereatt">Where Attribute:</label>
-        <select id="whereatt" name="whereatt">
-            <option value="">Select Attribute</option>
+        <select id="whereatt" name="whereatt"></select>
+        <br>
+        <label for="operator">Operator:</label>
+        <select id="operator" name="operator">
+            <option value="=">=</option>
+            <option value="<">&lt;</option>
+            <option value=">">&gt;</option>
+            <option value="<=">&lt;=</option>
+            <option value=">=">&gt;=</option>
+            <option value="LIKE">LIKE</option>
         </select>
         <br>
         <label for="value">Value:</label>
@@ -40,7 +49,6 @@
         <br>
         <button type="submit">Join and Show Data</button>
     </form>
-    {% endif %}
 
     {% if show_table %}
     <table>
@@ -65,8 +73,8 @@
 
     <script>
         $(document).ready(function() {
-            $('#table1').on('input', function() {
-                var tableName = $(this).val();
+            function populateDropdown(tableName, dropdownId) {
+                console.log("Selected table:", tableName);
                 if (tableName) {
                     $.ajax({
                         type: 'POST',
@@ -74,41 +82,34 @@
                         contentType: 'application/json',
                         data: JSON.stringify({table: tableName}),
                         success: function(response) {
-                            var whereatt = $('#whereatt');
-                            whereatt.empty();
-                            whereatt.append('<option value="">Select Attribute</option>');
-                            response.forEach(function(column) {
-                                whereatt.append('<option value="' + column + '">' + column + '</option>');
-                            });
+                            console.log("Received columns:", response);
+                            if (response.error) {
+                                alert(response.error);
+                            } else {
+                                var dropdown = $(dropdownId);
+                                dropdown.empty();
+                                dropdown.append('<option value="">Select Attribute</option>');
+                                response.forEach(function(column) {
+                                    dropdown.append('<option value="' + column + '">' + column + '</option>');
+                                });
+                            }
                         },
                         error: function() {
                             alert('Error fetching columns.');
                         }
                     });
                 }
+            }
+
+            $('#table1').on('change', function() {
+                var tableName = $(this).val();
+                populateDropdown(tableName, '#attribute1');
+                populateDropdown(tableName, '#whereatt');
             });
 
-            $('#table2').on('input', function() {
+            $('#table2').on('change', function() {
                 var tableName = $(this).val();
-                if (tableName) {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/get_columns',
-                        contentType: 'application/json',
-                        data: JSON.stringify({table: tableName}),
-                        success: function(response) {
-                            var attribute2 = $('#attribute2');
-                            attribute2.empty();
-                            attribute2.append('<option value="">Select Attribute</option>');
-                            response.forEach(function(column) {
-                                attribute2.append('<option value="' + column + '">' + column + '</option>');
-                            });
-                        },
-                        error: function() {
-                            alert('Error fetching columns.');
-                        }
-                    });
-                }
+                populateDropdown(tableName, '#attribute2');
             });
         });
     </script>

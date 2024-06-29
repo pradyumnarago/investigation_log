@@ -15,8 +15,10 @@ def get_db_connection():
     try:
         connection = mysql.connector.connect(
             host="localhost",
-            user=GlobalSQLCredentials.username,  # Update with your MySQL username
-            password=GlobalSQLCredentials.password,  # Update with your MySQL password
+            #user=GlobalSQLCredentials.username,  # Update with your MySQL username
+            #password=GlobalSQLCredentials.password,  # Update with your MySQL password
+            user="root",
+            password="pradyu9164",
             database="investigation_log"
         )
         if connection.is_connected():
@@ -48,6 +50,50 @@ def sql_login():
             return render_template('sql_login.html', error=error)
     else:
         return render_template('sql_login.html')
+
+
+@app.route('/input_tables')
+def input_tables():
+    return render_template('input_tables.html')
+
+@app.route('/show_table')
+def show_table():
+    # Logic to fetch and display table data
+    return render_template('show_table.html')
+
+@app.route('/show_joined_tables')
+def show_joined_tables():
+    # Logic to join tables and display the results
+    return render_template('join_tables.html')
+
+@app.route('/custom_query_form')
+def custom_query_form():
+    return render_template('custom_query.html')
+
+@app.route('/custom_query', methods=['GET', 'POST'])
+def custom_query():
+    if request.method == 'POST':
+        query = request.form['query']
+        results = execute_custom_query(query)
+        return render_template('custom_query.html', results=results)
+    return render_template('custom_query.html')
+
+def execute_custom_query(query):
+    connection = get_db_connection()
+    if connection:
+        cursor = connection.cursor()
+        try:
+            cursor.execute(query)
+            columns = cursor.description
+            rows = cursor.fetchall()
+            return {'columns': [column[0] for column in columns], 'rows': rows}
+        except Error as e:
+            print(f"Error executing query: {e}")
+            return None
+        finally:
+            connection.close()
+    else:
+        return None
 
 @app.route('/submit_cases', methods=['POST'])
 def submit_cases():
@@ -230,7 +276,7 @@ def show_tables():
                 cursor.close()
                 connection.close()
                 
-                return render_template('show_tables.html', columns=column_names, data=results, show_table=True)
+                return render_template('show_table.html', columns=column_names, data=results, show_table=True)
             except Error as e:
                 return f"An error occurred while retrieving data: {e}"
             finally:
@@ -257,6 +303,18 @@ def get_columns():
             return jsonify({"error": str(e)})
     return jsonify({"error": "Failed to connect to the database."})
 
+@app.route('/list_tables', methods=['GET'])
+def list_tables():
+    connection = get_db_connection()
+    if connection:
+        cursor = connection.cursor()
+        cursor.execute("SHOW TABLES")
+        tables = [row[0] for row in cursor.fetchall()]
+        connection.close()
+        return render_template('join_tables.html', tables=tables, show_table=False)
+    else:
+        return "Failed to connect to the database"
+
 @app.route('/join_tables', methods=['GET', 'POST'])
 def join_tables():
     if request.method == 'POST':
@@ -266,6 +324,7 @@ def join_tables():
         attribute1 = request.form.get('attribute1')
         attribute2 = request.form.get('attribute2')
         whereatt = request.form.get("whereatt")
+        operator = request.form.get('operator')
         value = request.form.get("value")
         
         connection = get_db_connection()
@@ -273,7 +332,7 @@ def join_tables():
             try:
                 cursor = connection.cursor()
                 
-                sql = f"SELECT * FROM {table1} NATURAL JOIN {table2} ON {table1}.{attribute1}={table2}.{attribute2} WHERE {table1}.{whereatt}={value}"
+                sql = f"SELECT * FROM {table1} as t1 INNER JOIN {table2} as t2 ON t1.{attribute1}=t2.{attribute2} WHERE t1.{whereatt}{operator}{value}"
                 cursor.execute(sql)
                 
                 results = cursor.fetchall()
