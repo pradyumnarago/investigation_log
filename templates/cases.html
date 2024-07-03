@@ -6,8 +6,8 @@
     <title>Investigation Log - Case Input</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<body>
-
+<body sytle="background-image :url('C:\Users\Lenovo\Pictures\db1.jpeg')">
+    
     <div class="container">
         <h2>Case Input Form</h2>
         <div id="error-message" class="error"></div>
@@ -18,7 +18,7 @@
             </div>
             <div class="form-group">
                 <label for="date_time">Date and Time:</label>
-                <input type="datetime-local" id="date_time" name="date_time" aria-label="Date and Time" required>
+                <input type="text" id="date_time" name="date_time" aria-label="Date and Time" required>
             </div>
             <div class="form-group">
                 <label for="type">Case Type:</label>
@@ -44,7 +44,6 @@
         </form>
     </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
 </html>

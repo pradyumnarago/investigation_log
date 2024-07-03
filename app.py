@@ -134,7 +134,7 @@ def submit_cases():
     connection = get_db_connection()
     if connection:
         cursor = connection.cursor()
-        sql = "INSERT INTO `cases` (case_id, date_time, type, victim_id, culprit_id, location_id, discription) VALUES (%s, %s, %s, %s, %s, %s,%s)"
+        sql = "INSERT INTO `cases` (case_id, date_time, type, victim_id, culprit_id, location_id, discription) VALUES (%s, %s, %s, %s, %s, %s,%s);"
         val = (case_id, date_time, case_type, victim_id, culprit_id, location_id, discription)
 
         try:
@@ -146,6 +146,7 @@ def submit_cases():
         finally:
             cursor.close()
             connection.close()
+            return render_template('cases.html')
     else:
         return "Failed to connect to the database"
 
@@ -161,7 +162,7 @@ def submit_people():
     connection = get_db_connection()
     if connection:
         cursor = connection.cursor()
-        sql = "INSERT INTO `people` (person_id, name, age, phno, address_id, relationship) VALUES (%s, %s, %s, %s, %s, %s)"
+        sql = "INSERT INTO `people` (person_id, name, age, phno, address_id, relationship) VALUES (%s, %s, %s, %s, %s, %s);"
         val = (person_id, name, age, phno, address_id, relationship)
 
         try:
@@ -173,6 +174,8 @@ def submit_people():
         finally:
             cursor.close()
             connection.close()
+            
+            return render_template('people.html')
     else:
         return "Failed to connect to the database"
 
@@ -200,6 +203,7 @@ def submit_jail():
         finally:
             cursor.close()
             connection.close()
+            return render_template('jail_record.html')
     else:
         return "Failed to connect to the database"
 
@@ -225,6 +229,7 @@ def submit_location():
         finally:
             cursor.close()
             connection.close()
+            return render_template('locations.html')
     else:
         return "Failed to connect to the datalocation"
 
@@ -240,7 +245,7 @@ def submit_evidence():
     connection = get_db_connection()
     if connection:
         cursor = connection.cursor()
-        sql = "INSERT INTO `evidence` (evidence_id, location_id, description, notes, case_id) VALUES (%s, %s, %s, %s, %s)"
+        sql = "INSERT INTO `evidences` (evidence_id, location_id, description, notes, case_id) VALUES (%s, %s, %s, %s, %s)"
         val = (evidence_id, location_id, description, notes,case_id)
 
         try:
@@ -250,8 +255,10 @@ def submit_evidence():
         except Error as e:
             return f"An error occurred while inserting data: {e}"
         finally:
+            
             cursor.close()
             connection.close()
+            return render_template('evidence.html')
     else:
         return "Failed to connect to the database"
 
@@ -275,8 +282,10 @@ def submit_testimonials():
         except Error as e:
             return f"An error occurred while inserting data: {e}"
         finally:
+            
             cursor.close()
             connection.close()
+            return render_template('testimonials.html')
     else:
         return "Failed to connect to the database"
 
@@ -302,7 +311,7 @@ def show_tables():
                 cursor.close()
                 connection.close()
                 
-                return render_template('show_table.html', columns=column_names, data=results, show_table=True)
+                return render_template('show_table.html', columns=column_names, data=results, table = slist_tables(), show_table=True)
             except Error as e:
                 return f"An error occurred while retrieving data: {e}"
             finally:
@@ -325,7 +334,7 @@ def slist_tables():
     else:
         return "Failed to connect to the database"
 
-@app.route('/get_columns', methods=['POST'])
+@app.route('/get_columns', methods=['POST','GET'])
 def get_columns():
     table_name = request.json.get('table')
     connection = get_db_connection()
