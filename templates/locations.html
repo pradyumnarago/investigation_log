@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Input</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Location Input Form</h2>
+        <div id="error-message" class="error"></div>
+        <form id="location-form" action="/submit_location" method="POST">
+            <div class="form-group">
+                <label for="location_id">Location ID:</label>
+                <input type="text" id="location_id" name="location_id" aria-label="Location ID" required>
+            </div>
+            <div class="form-group">
+                <label for="location_name">Location Name:</label>
+                <input type="text" id="location_name" name="location_name" aria-label="Location Name" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" aria-label="Description" ></textarea>
+            </div>
+            <div class="form-group">
+                <label for="place">Place:</label>
+                <input type="text" id="place" name="place" aria-label="Place">
+            </div>
+            <button type="submit">Submit Location</button>
+        </form>
+    </div>
+
+
+</body>
+</html>

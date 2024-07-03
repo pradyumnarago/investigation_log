@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evidence Input</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylese.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Evidence Input Form</h2>
+        <div id="error-message" class="error"></div>
+        <form id="evidence-form" action="/submit_evidence" method="POST">
+            <div class="form-group">
+                <label for="evidence_id">Evidence ID:</label>
+                <input type="text" id="evidence_id" name="evidence_id" aria-label="Evidence ID" required>
+            </div>
+            <div class="form-group">
+                <label for="location_id">Location ID:</label>
+                <input type="text" id="location_id" name="location_id" aria-label="Location ID" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" aria-label="Description" ></textarea>
+            </div>
+            <div class="form-group">
+                <label for="notes">Notes:</label>
+                <textarea id="notes" name="notes" aria-label="Notes"  ></textarea>
+            </div>
+            <div class="form-group">
+                <label for="case_id">Case ID:</label>
+                <input type="text" id="case_id" name="case_id" aria-label="Case ID" required>
+            </div>
+            <button type="submit">Submit Evidence</button>
+        </form>
+    </div>
+
+
+</body>
+</html>

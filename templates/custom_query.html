@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Custom SQL Query</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h2>Enter Custom SQL Query</h2>
+    <form action="{{ url_for('custom_query') }}" method="POST">
+        <label for="query">SQL Query:</label><br>
+        <textarea id="query" name="query" rows="8" cols="80" required></textarea><br>
+        <button type="submit">Execute Query</button>
+    </form>
+
+    {% if results %}
+    <h3>Query Results</h3>
+    <table>
+        <thead>
+            <tr>
+                {% for column in results.columns %}
+                <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in results.rows %}
+            <tr>
+                {% for value in row %}
+                <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+</body>
+</html>
